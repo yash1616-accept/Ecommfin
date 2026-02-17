@@ -2,11 +2,45 @@
 
 ## Prerequisites
 
-1. **Environment Variables**: Set in your deployment platform:
-   - `DATABASE_URL`: PostgreSQL connection string
-   - `NODE_ENV`: Set to `production`
+1. **Database**: A PostgreSQL instance must be running and accessible
+2. **Environment Variables**: Configured per environment (see reference below)
 
-2. **Database**: Must already exist and be accessible
+## Environment Variables Reference
+
+Both `.env.example` files are included in the repo. Copy them to `.env` and fill in your values:
+
+```bash
+# Backend
+cp backend/.env.example backend/.env
+
+# Frontend
+cp frontend/.env.example frontend/.env
+```
+
+### Backend Environment Variables
+
+| Variable        | Required | Dev Default     | Production       | Description                                |
+| --------------- | -------- | --------------- | ---------------- | ------------------------------------------ |
+| `PORT`          | No       | `3000`          | Set by platform  | Express server port                        |
+| `NODE_ENV`      | No       | `development`   | `production`     | Runtime environment                        |
+| `DATABASE_TYPE` | Yes      | `postgresql`    | `postgresql`     | Database driver (`sqlite` or `postgresql`) |
+| `DATABASE_URL`  | Yes      | Local PG string | Supabase/RDS URL | PostgreSQL connection string               |
+
+### Frontend Environment Variables
+
+| Variable       | Required | Dev Default                 | Production           | Description          |
+| -------------- | -------- | --------------------------- | -------------------- | -------------------- |
+| `VITE_API_URL` | Yes      | `http://localhost:3000/api` | Deployed backend URL | Backend API base URL |
+
+> **⚠️ Important**: Vite embeds `VITE_*` variables at **build time**, not runtime. Set them in your platform **before** triggering a build. Changes require a rebuild to take effect.
+
+### Platform-Specific Setup
+
+| Platform           | Where to set env variables                      |
+| ------------------ | ----------------------------------------------- |
+| **Local**          | `backend/.env` and `frontend/.env`              |
+| **Vercel**         | Dashboard → Settings → Environment Variables    |
+| **AWS App Runner** | Service → Configuration → Environment Variables |
 
 ## Vercel Deployment
 
