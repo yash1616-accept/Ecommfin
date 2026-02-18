@@ -11,7 +11,11 @@ dotenv.config();
 
 const app = express();
 
-app.use(helmet());
+// helmet's export shape can vary between environments/builds (default vs namespace).
+// Use a runtime-compatible wrapper so the middleware remains callable regardless
+// of whether `helmet` is the callable default export or a module namespace object.
+const _helmet: any = (helmet as any)?.default ?? helmet;
+app.use(_helmet());
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
